@@ -1,0 +1,26 @@
+{
+  "name": "content-editable-extension-js",
+  "version": "1.0.0",
+  "description": "Extend the content-editable-js to insert emoji images, common format images, and implement the @input association function.",
+  "main": "src/main.ts",
+  "repository": "https://github.com/tonyshu168/content-editable-extension-js.git",
+  "author": "tonyshu168 <493397276@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development rollup -c",
+    "build": "cross-env NODE_ENV=production rollup -c"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "rollup": "^2.71.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "rollup-watch": "^4.3.1",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "test-library-shu": "^1.0.1"
+  }
+}

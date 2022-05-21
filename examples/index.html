@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Div contenteditable</title>
+  <meta charset="utf-8"/>
+  <meta httP-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .div-text {
+      width: 500px;
+      height: 300px;
+      overflow: hidden;
+      border: 1px solid #eee;
+      outline: blue;
+    }
+    ul, li {
+      list-style: none;
+    }
+    .emioj-container {
+      position: relative;
+    }
+    ul {
+      display: none;
+    }
+    ul, li {
+      margin: 0;
+      padding: 0;
+    }
+    ul img, .div-text img {
+      width: 50PX;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="div-text"></div>
+  <div>
+    <input type="button" value="插入emioj" id="insertBtn" />
+    <input type="button" value="获取焦点" id="getFocuseBtn" />
+  </div>
+  <div class="emioj-container">
+    <input type="button" value="emioj" id="emiojBtn" />
+    <ul>
+      <li><img src="images/oip-c.jpg" /></li>
+    </ul>
+  </div>
+  <div>
+    weasdfkalsdfjawefwwwe
+    safsasfa
+  </div>
+</div>
+
+<script src="../dist/content-editable-extension-umd.js"></script>
+<script>
+(function(){
+  const insertBtn = document.getElementById('insertBtn');
+  const getFocuseBtn = document.getElementById('getFocuseBtn');
+  const textarea = document.getElementsByClassName('div-text')[0];
+  const emiojBtn = document.getElementById('emiojBtn');
+  const emiojBox = emiojBtn.nextElementSibling;
+  const ceExtension = new CEExtension(textarea);
+
+  insertBtn.addEventListener('click', insertImg);
+
+  getFocuseBtn.addEventListener('click', () => {
+    // 设置光标定位内容的最后面
+    CEExtension.setCursorToLast( textarea );
+  })
+
+  emiojBtn.addEventListener('click', (e) => {
+    const { target } = e;
+    const emiojBox = target.nextElementSibling;
+    const { display } = emiojBox.style
+    console.log(target, display);
+    emiojBox.style.display = !display || display === 'none' ? 'block' : 'none'
+  })
+
+  emiojBox.addEventListener('click', (e) => {
+    const { target } = e;
+    const { tagName } = target;
+
+    if ( tagName === 'IMG' ) {
+      insertImg();
+      emiojBox.style.display = 'none';
+    }
+  })
+
+  // 插入图片
+  function insertImg() {
+    const img = '<img src="./images/oip-c.jpg" alt="图片" />';
+    ceExtension.insert(img);
+  }
+})()
+</script>
+</body>
+</html>
