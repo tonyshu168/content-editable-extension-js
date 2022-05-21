@@ -7,6 +7,7 @@ import { terser } from 'rollup-plugin-terser';
 const isDev = /development/.test(process.env.NODE_ENV);
 const outPath = isDev ? path.resolve(__dirname, 'dist') : path.resolve(__dirname, 'dist/min');
 const name = 'content-editable-extension';
+
 const outputConfigs = [
   {
     file: `${outPath}/${name}-umd.js`,

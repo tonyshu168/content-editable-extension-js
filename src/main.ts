@@ -1,3 +1,6 @@
+import isInEditableElement from './isInEditableElement';
+import isNeedAssoicate from './isNeedAssociate';
+
 type selectionType = {
   ['type']: string,
   createRange: Function,
@@ -9,16 +12,23 @@ declare global {
   }
 }
 
-
+/*
+* @params dom: Set content-editable dom
+* @params isNeedAssociate: Determine if you need to associate
+* @params associateHandleCb: associate callback
+*/
 export default class CEExtension {
-  constructor(dom: HTMLElement) {
+  constructor(dom: HTMLElement, isNeedAssociate: number | boolean = 0, associateHandleCb = () => {}) {
     if (!dom) { throw Error('Params dom is not null'); }
 
     this.dom = dom;
+    this.associateHandleCb = associateHandleCb;
     this.setContentEditable();
+    isNeedAssociate && this.addChangeEvent();
   }
 
   private dom: HTMLElement;
+  private associateHandleCb: Function;
 
   private setContentEditable( ) {
     const { dom } = this;
@@ -29,6 +39,17 @@ export default class CEExtension {
     }
   }
 
+  private addChangeEvent() {
+    const { dom } = this;
+    dom.addEventListener('input', e => {
+      const { target } = e;
+      const innerHTML = (< HTMLElement>target).innerHTML;
+      const isNeedObj = isNeedAssoicate(innerHTML);
+      console.log(isNeedObj);
+      this.associateHandleCb(isNeedObj);
+    })
+  }
+
   /*
   * Params htmlStr: <img src="./img/oip-c.jpg" alt="图片" />
   * Params isAssociate: @ associate
@@ -36,7 +57,10 @@ export default class CEExtension {
   insert( htmlStr: string, isAssociate: boolean | number ) {
     if ( window.getSelection ) {
       const selection = window.getSelection();
-      let range = <Range>selection?.getRangeAt(0);
+      let range = selection!.getRangeAt(0);
+
+      // If the selection is not inside the content-editable dom element, it is not processed
+      if ( !isInEditableElement.call(this, range) ) { return; }
 
       if ( selection?.getRangeAt && selection.rangeCount ) {
         const el = document.createElement('div');
@@ -47,6 +71,22 @@ export default class CEExtension {
 
         while ( node = el.firstChild ) {
           lastNode = frag.appendChild(node);
+        }
+
+        // Deletes the '@esdss' characters entered
+        if ( isAssociate ) {
+          const { childNodes } = range.commonAncestorContainer;
+
+          for (let i = childNodes.length -1; i >= 0; i--) {
+            const element = childNodes[i];
+            const { textContent } = element;
+
+            if ( textContent && textContent.includes('@') ) {
+              const position = textContent.lastIndexOf('@');
+              element.textContent = textContent.substring(0, position + 1);
+              break;
+            }
+          }
         }
 
         range?.insertNode( frag );
@@ -72,9 +112,9 @@ export default class CEExtension {
     if ( window.getSelection ) {
       dom.focus();
 
-      const range = window.getSelection();
-      range?.selectAllChildren( dom );
-      range?.collapseToEnd();
+      const selection = window.getSelection();
+      selection?.selectAllChildren( dom );
+      selection?.collapseToEnd();
     }
     else if ( document.selection ) {  // IE10 9 8 7 6 5
       const range = document.selection.createRange();
