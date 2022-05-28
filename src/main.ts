@@ -46,6 +46,7 @@ export default class CEExtension {
       const innerHTML = (< HTMLElement>target).innerHTML;
       const isNeedObj = isNeedAssoicate(innerHTML);
       console.log(isNeedObj);
+      // Calculate whether input association processing is required
       this.associateHandleCb(isNeedObj);
     })
   }
@@ -55,6 +56,7 @@ export default class CEExtension {
   * Params isAssociate: @ associate
   */
   insert( htmlStr: string, isAssociate: boolean | number ) {
+    if ( isAssociate ) { CEExtension.setCursorToLast(this.dom); }
     if ( window.getSelection ) {
       const selection = window.getSelection();
       let range = selection!.getRangeAt(0);

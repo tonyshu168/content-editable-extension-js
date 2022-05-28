@@ -12,6 +12,7 @@
       flex-direction: column;
       flex-wrap: wrap;
       align-items: center;
+      position:relative;
     }
     .div-text {
       width: 500px;
@@ -37,6 +38,7 @@
       width: 50PX;
     }
     .auto-complete {
+      display: none;
       min-width: 200px;
       border: solid 1px #eee;
     }
@@ -137,6 +139,11 @@
         lis += `<li>${value}</li>`;
       });
       autoCompleteContainer.innerHTML = lis;
+      const { display } = autoCompleteContainer.style;
+      
+      if ( display === 'none' ) {
+        autoCompleteContainer.style.display = 'block';
+      }
     }, 500);
   }
 
@@ -155,7 +162,8 @@
 
     if ( tagName === 'LI' ) {
       const [value, isAssociate] = [target.innerHTML, 1]
-      ceExtension.insert(value, isAssociate);
+      ceExtension.insert(`${value}&nbsp;`, isAssociate);
+      autoCompleteContainer.style.display = 'none';
     }
   })
 })()
