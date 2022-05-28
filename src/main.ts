@@ -44,7 +44,11 @@ export default class CEExtension {
     dom.addEventListener('input', e => {
       const { target } = e;
       const innerHTML = (< HTMLElement>target).innerHTML;
-      const isNeedObj = isNeedAssoicate(innerHTML);
+      const selection = window.getSelection();
+      const range = selection?.getRangeAt(0);
+      const textNode = range!.commonAncestorContainer;
+      const isNeedObj = isNeedAssoicate(textNode.textContent || '');
+      console.log(isNeedObj);
       // Calculate whether input association processing is required
       this.associateHandleCb(isNeedObj);
     })
@@ -65,6 +69,7 @@ export default class CEExtension {
 
       if ( selection?.getRangeAt && selection.rangeCount ) {
         const el = document.createElement('div');
+        let rangeLastNode: Node | null = null;
         el.innerHTML = htmlStr;
 
         const frag = document.createDocumentFragment();
@@ -77,8 +82,10 @@ export default class CEExtension {
         // Deletes the '@esdss' characters entered
         if ( isAssociate ) {
           const { childNodes } = range.commonAncestorContainer;
+          const childNodeLen = childNodes.length;
+          rangeLastNode = childNodes[childNodeLen -1];
 
-          for (let i = childNodes.length -1; i >= 0; i--) {
+          for (let i = childNodeLen -1; i >= 0; i--) {
             const element = childNodes[i];
             const { textContent } = element;
 
@@ -90,7 +97,13 @@ export default class CEExtension {
           }
         }
 
-        range?.insertNode( frag );
+        // Append is used if the element is DIV, insertNode is used otherwise
+        if ( rangeLastNode && rangeLastNode.nodeName === 'DIV' ) {
+          rangeLastNode.appendChild(frag)
+        }
+        else {
+          range?.insertNode( frag );
+        }
 
         if ( lastNode ) {
           range = range?.cloneRange();
@@ -122,6 +135,29 @@ export default class CEExtension {
       range.moveToElementText( dom );
       range.collapse( false );
       range.select();
+    }
+  }
+
+  // Sets the position of the association list
+  static setPositionOfAssociateList(associateList: HTMLElement) {
+    if (!associateList) { throw Error('Params associateList is not null'); }
+
+    if ( window.getSelection ) {
+      const selection = window.getSelection();
+      const range = selection!.getRangeAt(0);
+      const textNode = range.commonAncestorContainer;
+      const tempRange = document.createRange();
+      tempRange.selectNodeContents(textNode);
+      const rects = Object.prototype.hasOwnProperty.call(tempRange, 'getBoundingClientRect')
+        ? tempRange.getBoundingClientRect() : tempRange.getClientRects()[0];
+
+      // 'sdwes@ew'字符串中@之前的字符长度
+      const beforeStrLen = textNode.textContent?.lastIndexOf('@') || 0;
+      const CORRECT_WIDTH_VALUE = 8, CORRECT_HEIGHT_VALUE = 16;
+
+      associateList.style.position = 'absolute';
+      associateList.style.left = rects.left + CORRECT_WIDTH_VALUE * beforeStrLen + 'px';
+      associateList.style.top = rects.top + CORRECT_HEIGHT_VALUE + 'px';
     }
   }
   

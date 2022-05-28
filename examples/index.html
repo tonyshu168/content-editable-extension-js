@@ -133,6 +133,8 @@
         if ( status === 200 ) {
           data = res.data;
         }
+
+        CEExtension.setPositionOfAssociateList(autoCompleteContainer);
       }
       let lis = ''
       data.forEach(function(value) {

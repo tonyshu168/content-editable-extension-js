@@ -73,8 +73,11 @@
           var dom = this.dom;
           dom.addEventListener('input', function (e) {
               var target = e.target;
-              var innerHTML = target.innerHTML;
-              var isNeedObj = isNeedAssoicate(innerHTML);
+              target.innerHTML;
+              var selection = window.getSelection();
+              var range = selection === null || selection === void 0 ? void 0 : selection.getRangeAt(0);
+              var textNode = range.commonAncestorContainer;
+              var isNeedObj = isNeedAssoicate(textNode.textContent || '');
               console.log(isNeedObj);
               // Calculate whether input association processing is required
               _this.associateHandleCb(isNeedObj);
@@ -97,6 +100,7 @@
               }
               if ((selection === null || selection === void 0 ? void 0 : selection.getRangeAt) && selection.rangeCount) {
                   var el = document.createElement('div');
+                  var rangeLastNode = null;
                   el.innerHTML = htmlStr;
                   var frag = document.createDocumentFragment();
                   var node = void 0, lastNode = void 0;
@@ -106,7 +110,9 @@
                   // Deletes the '@esdss' characters entered
                   if (isAssociate) {
                       var childNodes = range.commonAncestorContainer.childNodes;
-                      for (var i = childNodes.length - 1; i >= 0; i--) {
+                      var childNodeLen = childNodes.length;
+                      rangeLastNode = childNodes[childNodeLen - 1];
+                      for (var i = childNodeLen - 1; i >= 0; i--) {
                           var element = childNodes[i];
                           var textContent = element.textContent;
                           if (textContent && textContent.includes('@')) {
@@ -116,7 +122,13 @@
                           }
                       }
                   }
-                  range === null || range === void 0 ? void 0 : range.insertNode(frag);
+                  // Append is used if the element is DIV, insertNode is used otherwise
+                  if (rangeLastNode && rangeLastNode.nodeName === 'DIV') {
+                      rangeLastNode.appendChild(frag);
+                  }
+                  else {
+                      range === null || range === void 0 ? void 0 : range.insertNode(frag);
+                  }
                   if (lastNode) {
                       range = range === null || range === void 0 ? void 0 : range.cloneRange();
                       range === null || range === void 0 ? void 0 : range.setStartAfter(lastNode);
@@ -146,6 +158,30 @@
               range.moveToElementText(dom);
               range.collapse(false);
               range.select();
+          }
+      };
+      // Sets the position of the association list
+      CEExtension.setPositionOfAssociateList = function (associateList) {
+          var _a;
+          if (!associateList) {
+              throw Error('Params associateList is not null');
+          }
+          if (window.getSelection) {
+              var selection = window.getSelection();
+              var range = selection.getRangeAt(0);
+              var textNode = range.commonAncestorContainer;
+              console.log(range);
+              var tempRange = document.createRange();
+              tempRange.selectNodeContents(textNode);
+              var rects = Object.prototype.hasOwnProperty.call(tempRange, 'getBoundingClientRect')
+                  ? tempRange.getBoundingClientRect() : tempRange.getClientRects()[0];
+              console.log(textNode.textContent);
+              // 'sdwes@ew'字符串中@之前的字符长度
+              var beforeStrLen = ((_a = textNode.textContent) === null || _a === void 0 ? void 0 : _a.lastIndexOf('@')) || 0;
+              var CORRECT_WIDTH_VALUE = 8, CORRECT_HEIGHT_VALUE = 16;
+              associateList.style.position = 'absolute';
+              associateList.style.left = rects.left + CORRECT_WIDTH_VALUE * beforeStrLen + 'px';
+              associateList.style.top = rects.top + CORRECT_HEIGHT_VALUE + 'px';
           }
       };
       CEExtension.prototype.getValue = function () {
