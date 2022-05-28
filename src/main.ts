@@ -45,7 +45,6 @@ export default class CEExtension {
       const { target } = e;
       const innerHTML = (< HTMLElement>target).innerHTML;
       const isNeedObj = isNeedAssoicate(innerHTML);
-      console.log(isNeedObj);
       // Calculate whether input association processing is required
       this.associateHandleCb(isNeedObj);
     })

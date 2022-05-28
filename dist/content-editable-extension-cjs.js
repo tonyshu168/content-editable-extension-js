@@ -72,7 +72,7 @@ var CEExtension = /** @class */ (function () {
             var innerHTML = target.innerHTML;
             var isNeedObj = isNeedAssoicate(innerHTML);
             console.log(isNeedObj);
-            // 计算
+            // Calculate whether input association processing is required
             _this.associateHandleCb(isNeedObj);
         });
     };
