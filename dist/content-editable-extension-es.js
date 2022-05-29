@@ -155,7 +155,7 @@ var CEExtension = /** @class */ (function () {
         }
     };
     // Sets the position of the association list
-    CEExtension.setPositionOfAssociateList = function (associateList) {
+    CEExtension.setPositionOfAssociateList = function (associateList, outermostEleForAssociateList) {
         var _a;
         if (!associateList) {
             throw Error('Params associateList is not null');
@@ -164,18 +164,17 @@ var CEExtension = /** @class */ (function () {
             var selection = window.getSelection();
             var range = selection.getRangeAt(0);
             var textNode = range.commonAncestorContainer;
-            console.log(range);
             var tempRange = document.createRange();
             tempRange.selectNodeContents(textNode);
+            var outermostEleRects = outermostEleForAssociateList.getBoundingClientRect();
             var rects = Object.prototype.hasOwnProperty.call(tempRange, 'getBoundingClientRect')
                 ? tempRange.getBoundingClientRect() : tempRange.getClientRects()[0];
-            console.log(textNode.textContent);
             // 'sdwes@ew'字符串中@之前的字符长度
             var beforeStrLen = ((_a = textNode.textContent) === null || _a === void 0 ? void 0 : _a.lastIndexOf('@')) || 0;
-            var CORRECT_WIDTH_VALUE = 8, CORRECT_HEIGHT_VALUE = 16;
+            var CORRECT_WIDTH_VALUE = 12, CORRECT_HEIGHT_VALUE = 20;
             associateList.style.position = 'absolute';
-            associateList.style.left = rects.left + CORRECT_WIDTH_VALUE * beforeStrLen + 'px';
-            associateList.style.top = rects.top + CORRECT_HEIGHT_VALUE + 'px';
+            associateList.style.left = rects.left - outermostEleRects.left + CORRECT_WIDTH_VALUE * beforeStrLen + 'px';
+            associateList.style.top = rects.top - outermostEleRects.top + CORRECT_HEIGHT_VALUE + 'px';
         }
     };
     CEExtension.prototype.getValue = function () {

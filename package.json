@@ -6,11 +6,26 @@
   "module": "dist/content-editable-extension-es.js",
   "unpkg": "dist/content-editable-extension-1.0.0.js",
   "jsdeliver": "dist/content-editable-extension-1.0.0.js",
-  "repository": "https://github.com/tonyshu168/content-editable-extension-js.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonyshu168/content-editable-extension-js.git"
+  },
   "author": "tonyshu168 <493397276@qq.com>",
+  "homepage": "https://tonyshu168.github.io/content-editable-extension-js/examples/index.html",
+  "bugs": {
+    "url": "https://github.com/tonyshu168/content-editable-extension-js/issues"
+  },
   "license": "MIT",
+  "keywords": [
+    "contenteditable",
+    "contenteditor",
+    "content-editable",
+    "content-editable-extension",
+    "live",
+    "editor"
+  ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rollup -c",
+    "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "build": "cross-env NODE_ENV=production rollup -c"
   },
   "devDependencies": {

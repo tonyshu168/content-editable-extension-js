@@ -139,7 +139,7 @@ export default class CEExtension {
   }
 
   // Sets the position of the association list
-  static setPositionOfAssociateList(associateList: HTMLElement) {
+  static setPositionOfAssociateList(associateList: HTMLElement, outermostEleForAssociateList: HTMLElement) {
     if (!associateList) { throw Error('Params associateList is not null'); }
 
     if ( window.getSelection ) {
@@ -148,16 +148,17 @@ export default class CEExtension {
       const textNode = range.commonAncestorContainer;
       const tempRange = document.createRange();
       tempRange.selectNodeContents(textNode);
+      const outermostEleRects = outermostEleForAssociateList.getBoundingClientRect();
       const rects = Object.prototype.hasOwnProperty.call(tempRange, 'getBoundingClientRect')
         ? tempRange.getBoundingClientRect() : tempRange.getClientRects()[0];
 
       // 'sdwes@ew'字符串中@之前的字符长度
       const beforeStrLen = textNode.textContent?.lastIndexOf('@') || 0;
-      const CORRECT_WIDTH_VALUE = 8, CORRECT_HEIGHT_VALUE = 16;
+      const CORRECT_WIDTH_VALUE = 12, CORRECT_HEIGHT_VALUE = 20;
 
       associateList.style.position = 'absolute';
-      associateList.style.left = rects.left + CORRECT_WIDTH_VALUE * beforeStrLen + 'px';
-      associateList.style.top = rects.top + CORRECT_HEIGHT_VALUE + 'px';
+      associateList.style.left = rects.left - outermostEleRects.left + CORRECT_WIDTH_VALUE * beforeStrLen + 'px';
+      associateList.style.top = rects.top - outermostEleRects.top + CORRECT_HEIGHT_VALUE + 'px';
     }
   }
   
