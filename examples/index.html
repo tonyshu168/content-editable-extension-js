@@ -14,7 +14,7 @@
       flex-wrap: wrap;
       align-items: center;
       position:relative;
-      min-height: 430px;
+      min-height: 460px;
       height: calc(100vh - 370px);
     }
     .div-text {
@@ -84,7 +84,7 @@
 </nav>
 <main class="container">
   <div class="div-text"></div>
-  <div>
+  <div class="btn-group">
     <input type="button" value="插入emioj" id="insertBtn" />
     <input type="button" value="获取焦点" id="getFocuseBtn" />
   </div>
@@ -95,8 +95,7 @@
     </ul>
   </div>
   <div>
-    weasdfkalsdfjawefwwwe
-    safsasfa
+   <p class="bold title">Please try typing' @dsw' in the edit box above.</p>
   </div>
   <!-- Auto-complete as you enter -->
   <ul class="auto-complete">
@@ -178,7 +177,7 @@
       autoCompleteContainer.innerHTML = lis;
       const { display } = getComputedStyle(autoCompleteContainer);
       
-      if ( display === 'none' ) {
+      if ( display === 'none' && data.length ) {
         autoCompleteContainer.style.display = 'block';
       }
     }, 500);

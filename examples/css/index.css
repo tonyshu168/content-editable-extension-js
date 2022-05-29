@@ -13,6 +13,13 @@ a:hover {
 .bold {
   font-weight: 600;
 }
+.title {
+  padding: 10px;
+  color: #007bff;
+}
+.btn-group {
+  margin: 10px;
+}
 .nav-link {
   color: rgba(0,0,0,.5);
   height: 24px;
