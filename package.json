@@ -40,8 +40,5 @@
     "rollup-plugin-typescript2": "^0.31.2",
     "rollup-watch": "^4.3.1",
     "typescript": "^4.6.4"
-  },
-  "dependencies": {
-    "test-library-shu": "^1.0.1"
   }
 }
