@@ -6,6 +6,7 @@
   "module": "dist/content-editable-extension-es.js",
   "unpkg": "dist/content-editable-extension-1.0.0.js",
   "jsdeliver": "dist/content-editable-extension-1.0.0.js",
+  "types": "dist/main.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/tonyshu168/content-editable-extension-js.git"

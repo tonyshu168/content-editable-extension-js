@@ -33,9 +33,14 @@ export default class CEExtension {
   private setContentEditable( ) {
     const { dom } = this;
     const contenteditableValue = dom.getAttribute('contenteditable');
+    const styleBorder = getComputedStyle(dom).border;
 
     if (!contenteditableValue || contenteditableValue === 'false' ) {
       dom.setAttribute('contenteditable', 'true');
+    }
+
+    if ( !styleBorder || styleBorder === '0px none rgb(0, 0, 0)' ) {
+      dom.style.border = '1px solid #eee';
     }
   }
 

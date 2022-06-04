@@ -64,8 +64,12 @@
       CEExtension.prototype.setContentEditable = function () {
           var dom = this.dom;
           var contenteditableValue = dom.getAttribute('contenteditable');
+          var styleBorder = getComputedStyle(dom).border;
           if (!contenteditableValue || contenteditableValue === 'false') {
               dom.setAttribute('contenteditable', 'true');
+          }
+          if (!styleBorder || styleBorder === '0px none rgb(0, 0, 0)') {
+              dom.style.border = '1px solid #eee';
           }
       };
       CEExtension.prototype.addChangeEvent = function () {
