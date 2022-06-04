@@ -14,9 +14,9 @@ Extend the content-editable-js to insert emoji images, common format images, and
 ### Add the library
 ```html
 <!-- With CDN -->
-<script src="https://unpkg.com/content-editable-extension-js/dist/content-editable-extension-1.0.0.js"></script>
+<script src="https://unpkg.com/content-editable-extension-js/dist/content-editable-extension-1.0.1.js"></script>
 <!-- Locally -->
-<script src="dist/content-editable-extension-1.0.0.js"></script>
+<script src="dist/content-editable-extension-1.0.1.js"></script>
 ```
 ### Installation
 ```bash
@@ -26,7 +26,7 @@ npm install content-editable-extension-js --save
 ### Usage
 ```html
 <div class="div-text"></div>
-<script src="https://unpkg.com/content-editable-extension-js/dist/content-editable-extension-1.0.0.js"></script>
+<script src="https://unpkg.com/content-editable-extension-js/dist/content-editable-extension-1.0.1.js"></script>
 <script>
 const textarea = document.getElementsByClassName('div-text')[0];
 const ceExtension = new CEExtension(
@@ -139,7 +139,7 @@ Input '@ds', automatically associate 'dsewsd', 'dseewwe', 'dsios', etc. [You can
   </ul>
 </div>
 
-<script src="../dist/content-editable-extension-1.0.0.js"></script>
+<script src="../dist/content-editable-extension-1.0.1.js"></script>
 <script>
 (function(){
   const textarea = document.getElementsByClassName('div-text')[0];
