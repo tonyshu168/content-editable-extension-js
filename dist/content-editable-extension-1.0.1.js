@@ -196,4 +196,4 @@
   return CEExtension;
 
 }));
-//# sourceMappingURL=content-editable-extension-1.0.0.js.map
+//# sourceMappingURL=content-editable-extension-1.0.1.js.map
